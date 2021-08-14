@@ -1,6 +1,7 @@
 use serde::Deserialize;
 use reqwest::Error;
 use std::env;
+use colored::*;
 
 #[derive(Deserialize, Debug)]
 struct Data {
@@ -30,7 +31,13 @@ async fn main() -> Result<(), Error> {
     let users: Data = response.json().await?;
 
     println!("{:-^56}", "-");
-    println!("{:24} {:12} {:10} {:8}", "GOAL", "DEPOSITED", "BALANCE", "PROFIT");
+    println!(
+        "{:24} {:12} {:10} {:8}",
+        "GOAL".bold(),
+        "DEPOSITED".bold(),
+        "BALANCE".bold(),
+        "PROFIT".bold()
+    );
     println!("{:-^56}", "-");
 
     let mut deposited_acum: f64 = 0.0;
@@ -50,7 +57,13 @@ async fn main() -> Result<(), Error> {
         println!("{:24} {:>9} {:>10.0} {:>9.0}", goal_name, deposited, balance, profit);
     }
 
-    println!("{:24} {:>9} {:>10.0} {:>9.0}", "Total", deposited_acum, balance_acum, profit_acum);
+    println!(
+        "{:24} {:>9} {:>10} {:>9}",
+        "Total".cyan().bold(),
+        deposited_acum.to_string().cyan().bold(),
+        balance_acum.trunc().to_string().cyan().bold(),
+        profit_acum.trunc().to_string().cyan().bold()
+    );
     println!("{:-^56}", "-");
 
     Ok(())
